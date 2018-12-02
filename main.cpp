@@ -84,6 +84,19 @@ public:
         A -> nextElement = B;
         B -> nextElement = C;
 
+        size++;
+
+    }
+
+    void insertAtLast(int data){
+//        [A]
+//        [A]->[B]
+
+        element* A = getElement(size);
+        element* B = createElement(data);
+        A -> nextElement = B;
+        tail = B;
+        size++;
     }
 
     void search(int data){
@@ -119,6 +132,10 @@ public:
         }
     }
 
+    void displaySeparator(){
+        cout<<"\n"<<"___________________________________"<<"\n";
+    }
+
     void populateList(LL &ll, int count){
         ll.addFirstEle(0);
         for (int i = 1; i < count; i++) {
@@ -132,9 +149,11 @@ int main () {
     LL ll;
     ll.populateList(ll,10);
     ll.displayList();
+    ll.displaySeparator();
 //    ll.jumpToElement(100);
 //    ll.search(99);
     ll.insertAfter(4, -10);
+//    ll.insertAtLast(999);
     ll.displayList();
     return 0;
 }

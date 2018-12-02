@@ -24,15 +24,20 @@ public:
         size = 0;
     }
 
+    element* createElement(int data){
+        element* ele = new element;
+        ele -> data = data;
+        ele -> nextElement = NULL;
+        return ele;
+    }
+
     void displayElement(element* ele){
         cout<<"Data of the element "<<ele ->data<<"\n";
     }
 
     void addFirstEle(int val){
 
-        element* temp = new element;
-        temp -> data = val;
-        temp -> nextElement = NULL;
+        element* temp = createElement(val);
 
         head = temp;
         tail = temp;
@@ -42,9 +47,7 @@ public:
 
     void addEle(int val){
 
-        element* temp = new element;
-        temp -> data = val;
-        temp -> nextElement = NULL;
+        element* temp = createElement(val);
 
         tail -> nextElement = temp;
         tail = temp;
@@ -59,6 +62,28 @@ public:
             browser = browser -> nextElement;
         }
         displayElement(browser);
+    }
+
+    element* getElement(int pos){
+
+        element* browser = head;
+        for (int i = 0; i < pos-1; i++) {
+            browser = browser -> nextElement;
+        }
+        return browser;
+    }
+
+    void insertAfter(int pos, int data){
+//        [A]->[C]
+//        [A]->[B]->[C]
+        element* A = getElement(pos);
+        element* B = createElement(data);
+        element* C = A -> nextElement;
+
+        A -> nextElement = NULL;
+        A -> nextElement = B;
+        B -> nextElement = C;
+
     }
 
     void search(int data){
@@ -94,9 +119,9 @@ public:
         }
     }
 
-    void populateList(LL &ll){
+    void populateList(LL &ll, int count){
         ll.addFirstEle(0);
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < count; i++) {
             ll.addEle(i);
         }
     }
@@ -105,9 +130,11 @@ public:
 
 int main () {
     LL ll;
-    ll.populateList(ll);
+    ll.populateList(ll,10);
     ll.displayList();
 //    ll.jumpToElement(100);
-    ll.search(99);
+//    ll.search(99);
+    ll.insertAfter(4, -10);
+    ll.displayList();
     return 0;
 }

@@ -205,6 +205,14 @@ public:
             count++;
         }
     }
+
+    dllElement* jumpTo(int limit){
+        dllElement* pointer = head;
+        for (int i = 1; i <= limit; i++) {
+            pointer = pointer->rightEle;
+        }
+        return pointer;
+    }
     void reverseTraverse(){
         int count = size;
         dllElement* pointer = tail;
@@ -216,6 +224,23 @@ public:
     }
 
     void addElement(int data){
+
+        /**
+         * [temp]
+         * [head,temp]
+         * [tail,temp,head]
+         * [head,tail]  [temp]
+         * [head,tail] -> [temp]
+         * [head,tail] <-> [temp]
+         * [head] <-> [tail,temp]
+         * [head] <-> [tail]    [temp]
+         * [head] <-> [tail] -> [temp]
+         * [head] <-> [tail]  <-> [temp]
+         * [head] <-> [?] <-> [tail,temp]
+         * [head] <-> [?] <-> [tail]
+         *
+         */
+
         if(head == NULL && tail == NULL){
 
             dllElement* temp = createEle(data);
@@ -235,6 +260,32 @@ public:
         }
     }
 
+    void insertAfter(int pos,int data) {
+        dllElement *temp = createEle(data);
+        dllElement *current = jumpTo(pos);
+
+        //[head,current]-[?]-[?]-[?]-[tail]
+        //[head]-[?]-[current]-[?]-[tail]
+
+        dllElement* nextcurrent = NULL;
+        nextcurrent = current -> rightEle;
+        temp -> leftEle = current;
+        temp -> rightEle = current -> rightEle;
+        current -> rightEle = temp;
+        nextcurrent -> leftEle = temp;
+        size++;
+    }
+
+    void insertBeginning(int data){
+        dllElement* temp = createEle(data);
+        dllElement* nexthead ;
+        nexthead = head;
+        head = temp;
+        temp -> rightEle = nexthead;
+        nexthead -> leftEle = temp;
+        size++;
+    }
+
     void populateList(DLL &dll, int count){
         for (int i = 0; i < count; i++) {
             dll.addElement(i);
@@ -250,6 +301,10 @@ int main () {
     dll.populateList(dll,10);
     dll.forwardTraverse();
     util.displaySeparator();
-    dll.reverseTraverse();
+    dll.insertAfter(4,999);
+    dll.forwardTraverse();
+    util.displaySeparator();
+    dll.insertBeginning(11111);
+    dll.forwardTraverse();
     return 0;
 }

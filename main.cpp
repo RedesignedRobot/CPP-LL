@@ -294,8 +294,7 @@ public:
 
 };
 
-int main () {
-
+void dllDemo(){
     DLL dll;
     Util util;
     dll.populateList(dll,10);
@@ -306,5 +305,9 @@ int main () {
     util.displaySeparator();
     dll.insertBeginning(11111);
     dll.forwardTraverse();
+}
+
+int main () {
+
     return 0;
 }

@@ -307,7 +307,80 @@ void dllDemo(){
     dll.forwardTraverse();
 }
 
+//--------QUEUE----------
+
+class QLL{
+
+private:
+    llElement* first;
+    llElement* last;
+    int size;
+public:
+    QLL(){
+        first = NULL;
+        last = NULL;
+        size = 0;
+    }
+
+    llElement* createPerson(int data){
+        llElement* ele = new llElement;
+        ele -> data = data;
+        ele -> nextElement = NULL;
+        return ele;
+    }
+
+    void displayPerson(llElement* ele){
+        cout<<"Data of the person "<<ele ->data<<"\n";
+    }
+
+    void populateQueue(int limit){
+        for (int i = 0; i < limit; i++) {
+            addPersonToQueue(i);
+        }
+    }
+
+    void displayQueue(){
+        int count = 0;
+        llElement* browser = first;
+        while(count<size){
+            displayPerson(browser);
+            browser = browser -> nextElement;
+            count++;
+        }
+    }
+
+    void addPersonToQueue(int data){
+        llElement* tempPerson = createPerson(data);
+        if(first == NULL && last == NULL){
+            first = tempPerson;
+            last = tempPerson;
+            size++;
+        } else{
+            last -> nextElement = tempPerson;
+            last = tempPerson;
+            size++;
+        }
+    }
+    void removePersonFromQueue(){
+        first = first -> nextElement;
+        size--;
+    }
+    void queueDemo(){
+        Util util;
+        populateQueue(10);
+        displayQueue();
+        util.displaySeparator();
+        addPersonToQueue(-1);
+        displayQueue();
+        util.displaySeparator();
+        removePersonFromQueue();
+        displayQueue();
+    }
+};
+
 int main () {
 
+    QLL qll;
+    qll.queueDemo();
     return 0;
 }

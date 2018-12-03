@@ -4,16 +4,25 @@
 
 using namespace std;
 
-struct element{
+class Util{
+public:
+    void displaySeparator(){
+        cout<<"\n"<<"___________________________________"<<"\n";
+    }
+};
+
+//--------SINGLE LINKED LIST---------
+
+struct llElement{
     int data;
-    element* nextElement;
+    llElement* nextElement;
 };
 
 class LL{
 
 private:
-    element* head;
-    element* tail;
+    llElement* head;
+    llElement* tail;
     int size;
 
 public:
@@ -24,20 +33,20 @@ public:
         size = 0;
     }
 
-    element* createElement(int data){
-        element* ele = new element;
+    llElement* createElement(int data){
+        llElement* ele = new llElement;
         ele -> data = data;
         ele -> nextElement = NULL;
         return ele;
     }
 
-    void displayElement(element* ele){
-        cout<<"Data of the element "<<ele ->data<<"\n";
+    void displayElement(llElement* ele){
+        cout<<"Data of the llElement "<<ele ->data<<"\n";
     }
 
     void addFirstEle(int val){
 
-        element* temp = createElement(val);
+        llElement* temp = createElement(val);
 
         head = temp;
         tail = temp;
@@ -47,7 +56,7 @@ public:
 
     void addEle(int val){
 
-        element* temp = createElement(val);
+        llElement* temp = createElement(val);
 
         tail -> nextElement = temp;
         tail = temp;
@@ -57,16 +66,16 @@ public:
 
     void jumpToElement(int pos){
 
-        element* browser = head;
+        llElement* browser = head;
         for (int i = 0; i < pos-1; i++) {
             browser = browser -> nextElement;
         }
         displayElement(browser);
     }
 
-    element* getElement(int pos){
+    llElement* getElement(int pos){
 
-        element* browser = head;
+        llElement* browser = head;
         for (int i = 0; i < pos-1; i++) {
             browser = browser -> nextElement;
         }
@@ -76,9 +85,9 @@ public:
     void insertAfter(int pos, int data){
 //        [A]->[C]
 //        [A]->[B]->[C]
-        element* A = getElement(pos);
-        element* B = createElement(data);
-        element* C = A -> nextElement;
+        llElement* A = getElement(pos);
+        llElement* B = createElement(data);
+        llElement* C = A -> nextElement;
 
         A -> nextElement = NULL;
         A -> nextElement = B;
@@ -92,15 +101,15 @@ public:
 //        [A]
 //        [A]->[B]
 
-        element* A = getElement(size);
-        element* B = createElement(data);
+        llElement* A = getElement(size);
+        llElement* B = createElement(data);
         A -> nextElement = B;
         tail = B;
         size++;
     }
 
     void search(int data){
-        element* hunter = head;
+        llElement* hunter = head;
         bool isFound = false;
         while(hunter -> nextElement != NULL){
             if(hunter -> data == data){
@@ -124,16 +133,12 @@ public:
 
     void displayList(){
         int count = 0;
-        element* pointer = head;
+        llElement* pointer = head;
         while (count < size){
             displayElement(pointer);
             pointer = pointer->nextElement;
             count++;
         }
-    }
-
-    void displaySeparator(){
-        cout<<"\n"<<"___________________________________"<<"\n";
     }
 
     void populateList(LL &ll, int count){
@@ -145,15 +150,106 @@ public:
 
 };
 
-int main () {
+void llDemo(){
     LL ll;
+    Util util;
     ll.populateList(ll,10);
     ll.displayList();
-    ll.displaySeparator();
-//    ll.jumpToElement(100);
-//    ll.search(99);
+    util.displaySeparator();
+    ll.jumpToElement(100);
+    ll.search(99);
     ll.insertAfter(4, -10);
-//    ll.insertAtLast(999);
+    ll.insertAtLast(999);
     ll.displayList();
+}
+
+//--------DOUBLE LINKED LIST---------
+
+struct dllElement{
+    int data;
+    dllElement* leftEle;
+    dllElement* rightEle;
+};
+
+class DLL{
+private:
+    int size;
+    dllElement* head;
+    dllElement* tail;
+public:
+
+    DLL(){
+        size = 0;
+        head = NULL;
+        tail = NULL;
+    }
+
+    dllElement* createEle(int data){
+        dllElement* newEle = new dllElement;
+        newEle -> data = data;
+        newEle -> leftEle = NULL;
+        newEle -> rightEle = NULL;
+        return newEle;
+    }
+
+    void displayElement(dllElement* ele){
+        cout<<"Data of DLL_Element = "<<ele -> data<<"\n";
+    }
+
+    void forwardTraverse(){
+        int count = 0;
+        dllElement* pointer = head;
+        while (count < size){
+            displayElement(pointer);
+            pointer = pointer->rightEle;
+            count++;
+        }
+    }
+    void reverseTraverse(){
+        int count = size;
+        dllElement* pointer = tail;
+        while (count>0){
+            displayElement(pointer);
+            pointer = pointer->leftEle;
+            count--;
+        }
+    }
+
+    void addElement(int data){
+        if(head == NULL && tail == NULL){
+
+            dllElement* temp = createEle(data);
+            head = temp;
+            tail = temp;
+            size++;
+
+        } else{
+            dllElement* temp = createEle(data);
+//            setup link from A to B
+            tail -> rightEle = temp;
+//            setup link from B to A
+            temp -> leftEle = tail;
+//            move tail
+            tail = temp;
+            size++;
+        }
+    }
+
+    void populateList(DLL &dll, int count){
+        for (int i = 0; i < count; i++) {
+            dll.addElement(i);
+        }
+    }
+
+};
+
+int main () {
+
+    DLL dll;
+    Util util;
+    dll.populateList(dll,10);
+    dll.forwardTraverse();
+    util.displaySeparator();
+    dll.reverseTraverse();
     return 0;
 }
